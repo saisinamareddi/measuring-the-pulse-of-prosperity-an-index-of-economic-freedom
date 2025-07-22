@@ -1,0 +1,31 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the data (you can download from: https://www.heritage.org/index/download)
+# Replace 'path_to_file.csv' with your actual file path
+df = pd.read_csv('path_to_file.csv')
+
+# Preview data
+print(df.head())
+
+# Clean and filter relevant columns
+# Assuming columns include 'Country', 'Index Score', 'GDP per Capita'
+df = df[['Country Name', 'Index Overall Score', 'GDP per Capita (PPP)']]
+df.columns = ['Country', 'Economic Freedom Score', 'GDP per Capita']
+df.dropna(inplace=True)
+
+# Convert GDP per Capita to numeric (remove commas or currency symbols if needed)
+df['GDP per Capita'] = df['GDP per Capita'].replace('[\$,]', '', regex=True).astype(float)
+
+# Plot the relationship
+sns.set(style='whitegrid')
+plt.figure(figsize=(12, 6))
+sns.scatterplot(data=df, x='Economic Freedom Score', y='GDP per Capita', hue='Country')
+
+plt.title('Economic Freedom vs GDP per Capita')
+plt.xlabel('Economic Freedom Score (Heritage Foundation)')
+plt.ylabel('GDP per Capita (PPP)')
+plt.legend([],[], frameon=False)  # Hide legend for readability
+plt.tight_layout()
+plt.show()
